@@ -19,7 +19,7 @@ app = Flask(__name__)
 api = Api(app)
 
 class Students_Dynamic(Resource):
-    def get(self,search_value):
+    def get(self,search_value='default'):
         #Connect to databse
         conn = e.connect()
         #Perform query and return JSON data
@@ -40,10 +40,20 @@ class Students_Dynamic(Resource):
           query = conn.execute("SELECT C.school, COUNT(CASE WHEN C.SubCount > 1 THEN 1 ELSE NULL END) AS Complete, COUNT(C.SubCount) AS Total, CAST(COUNT(CASE WHEN C.SubCount > 1 THEN 1 ELSE NULL END) AS float)/CAST(COUNT(C.SubCount) AS float) AS Percent FROM (SELECT A.student_id, A.SubCount, B.school FROM (SELECT student_id, COUNT(CASE WHEN status = 'TURNED_IN' THEN 1 ELSE NULL END) AS SubCount FROM student_submissions GROUP BY student_id) A INNER JOIN student B ON A.student_id = B.student_id) C GROUP BY C.school")
           result = {'data': [dict(zip(tuple (query.keys()) ,i)) for i in query.cursor]}
           return result
+        elif search_value.lower() == 'default':
+          return {'Schoolytics API!': 'Please add /student_id, /course_id, /teacher_id, or /school_id to the path after /students/.'}
         else:
-          return {'Error': 'This is not a search option. Please enter student_id, course_id, teacher_id, or school_id.'}
+          return {'Error': 'This is not a search option. Please add /student_id, /course_id, /teacher_id, or /school_id to the path after /students/.'}
 
+class Students_Info(Resource):
+    def get(self):
+        #Info for dynamic API
+        return {'Schoolytics API!': 'Please add /student_id, /course_id, /teacher_id, or /school_id to the path after /students/.'}
+
+
+api.add_resource(Students_Info, '/students/')
 api.add_resource(Students_Dynamic, '/students/<string:search_value>')
+
 
 if __name__ == '__main__':
      app.run()
