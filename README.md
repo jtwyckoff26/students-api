@@ -25,12 +25,10 @@ $ pip install sqlalchemy
 ```bash
 $ python app.py
 ```
-  - You can then navigate to the browser of your choice and go to localhost (http://127.0.0.1:5000/students/)
+  - You can then navigate to the browser of your choice and go to localhost (http://127.0.0.1:5000/students)
   - Your options to return the queries are as follows:
-     - "/student_id" = Returns group by student_id and count completed assignments
-     - "/course_id" = Returns group by course_id and average grade
-     - "/teacher_id" = Returns group by teacher_id and count assignments created
-     - "/school_id" = Returns group by school_id and find percentage of students with more than 1 assignment completed
+     - "?value=<value>" = Returns group by <value> and count completed assignments,Returns group by <value> and average grade, and Returns group by <value> and count assignments created
+     - "?value=school" = Returns group by school and find percentage of students with more than 1 assignment completed
 
 ### Additional Info
 
